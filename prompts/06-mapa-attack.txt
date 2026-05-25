@@ -20,34 +20,27 @@ Las 4 amenazas críticas (DREAD ≥ 40) son:
 - TH06: SQL Injection (41/50)
 - TH14: PII Exposure in Logs (40/50)
 
-PARTE 1 — MAPEO INDIVIDUAL:
-Para cada amenaza con score DREAD ≥ 30, completá:
-
-[ID] — [Nombre]
-- Tactic: TA-XXXX — [nombre]
-- Technique: T-XXXX — [nombre]
-- Sub-technique: T-XXXX.XXX (si aplica)
-- Procedimiento en este sistema: cómo lo ejecutaría el atacante concretamente
-- Indicadores de compromiso (IoC): 2-3 señales observables en logs o tráfico
-- Detección sugerida: regla Falco, alerta ELK, o métrica Prometheus específica
-
+PARTE 1 — TABLA DE TÉCNICAS ATT&CK:
+Generá una tabla con todas las técnicas ATT&CK relevantes para este sistema.
+Columnas: ID Técnica | Nombre | Tactic | Mitigación
 Usá técnicas de ATT&CK for Containers cuando aplique
 (T1609, T1610, T1611, T1613, etc.)
 
 PARTE 2 — KILL CHAIN COMPLETO:
-Construí un kill chain realista de 6-10 pasos que encadene las amenazas
-más críticas desde acceso inicial hasta exfiltración.
+Construí un kill chain realista que encadene las amenazas más críticas
+desde acceso inicial hasta impacto final. Debe incluir Defense Evasion,
+Lateral Movement e Impact además de las fases básicas.
 
 Para cada fase:
-- Tactic y Technique ATT&CK
-- Acción concreta del atacante
-- Prerequisito necesario
-- Herramienta o artefacto utilizado
+- Número de fase y tactic ATT&CK
+- Técnica con código T-XXXX
+- Acción concreta del atacante en este sistema
+- Vector o herramienta utilizada
 
-Indicá el punto de detección más temprano posible en la cadena.
+Indicá el tiempo total estimado y los puntos críticos de detección.
 
 PARTE 3 — HEAT MAP DE TACTICS:
-Tabla con: Tactic | Amenazas mapeadas | Amenazas críticas | Cobertura de detección actual
+Tabla con: Tactic | Técnicas ATT&CK | Cobertura de detección actual
 Concluí con qué tactics tienen mayor brecha de detección.
 ```
 
@@ -56,25 +49,35 @@ Concluí con qué tactics tienen mayor brecha de detección.
 ## Response Summary
 
 La IA generó:
-- Mapeo ATT&CK de las 23 amenazas con score ≥ 30
-- Kill chain completo de 8 fases:
+- Tabla de **29 técnicas ATT&CK** distribuidas en 11 tactics:
+  Initial Access (3), Execution (2), Persistence (3), Privilege Escalation (3),
+  Defense Evasion (3), Credential Access (3), Discovery (3), Lateral Movement (2),
+  Collection (2), Exfiltration (2), Impact (3)
+- **Kill chain completo de 11 fases:**
   1. Initial Access (T1190) — CVE en Kong API Gateway
-  2. Execution (T1609) — kubectl exec en container
-  3. Persistence (T1525) — imagen maliciosa en registry
-  4. Privilege Escalation (T1611) — container escape runC
-  5. Credential Access (T1552.007) — extracción K8s Secrets
-  6. Discovery (T1613) — enumeración de pods y servicios
-  7. Collection (T1005) — pg_dump de PostgreSQL
-  8. Exfiltration (T1537) — transferencia a S3 del atacante
+  2. Execution (T1609) — kubectl exec en container de Kong
+  3. Persistence (T1525) — imagen Docker maliciosa en registry con backdoor
+  4. Privilege Escalation (T1611) — container escape vía CVE-2019-5736 (runC)
+  5. Defense Evasion (T1070.004) — eliminación de audit logs en nodo host
+  6. Credential Access (T1552.007) — extracción K8s Secrets vía API
+  7. Discovery (T1613) — enumeración de pods y servicios del cluster
+  8. Lateral Movement (T1021) — acceso a PostgreSQL con credenciales extraídas
+  9. Collection (T1005) — pg_dump completo de base de datos
+  10. Exfiltration (T1537) — transferencia a S3 del atacante
+  11. Impact (T1485) — eliminación de tablas para cubrir rastros
+- Tiempo total estimado del ataque: ~3-6 horas sin detección
+- 4 puntos críticos de detección: Fase 1 (WAF), Fase 4 (Falco),
+  Fase 6 (K8s audit logs), Fase 9 (database activity monitoring)
 - Heat map con Initial Access y Credential Access como tactics de mayor brecha
 
 ---
 
 ## Iteraciones Realizadas
 
-1. **Primera iteración:** Mapeo individual de amenazas críticas
-2. **Segunda iteración:** Kill chain completo con prerequisitos detallados
-3. **Tercera iteración:** Heat map y análisis de brechas de detección
+1. **Primera iteración:** Tabla de técnicas ATT&CK y kill chain básico
+2. **Segunda iteración:** Kill chain expandido agregando Defense Evasion (Fase 5),
+   Lateral Movement (Fase 8) e Impact (Fase 11) con acciones y vectores concretos
+3. **Tercera iteración:** Heat map de tactics y análisis de brechas de detección
 
 ---
 
@@ -91,6 +94,8 @@ Guardado en: `docs/06-mapa-attack.md`
 ---
 
 **Notas:**
-- El punto de detección más temprano es entre Fase 4 y Fase 5 (Falco detecta container escape)
-- Initial Access tiene cobertura BAJA — WAF no detecta exploits de aplicación específicos
+- El punto de detección más temprano es entre Fase 4 y Fase 6: Falco detecta
+  el container escape antes de que el atacante acceda a los Kubernetes Secrets
+- Initial Access tiene cobertura BAJA — WAF no detecta exploits de aplicación
+  específicos como CVEs de Kong
 - El kill chain completo se usó en la slide 8 de la presentación final

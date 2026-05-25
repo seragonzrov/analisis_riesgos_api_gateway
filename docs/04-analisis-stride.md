@@ -211,7 +211,7 @@ Un atacante que ha comprometido un container explota una vulnerabilidad en el ru
 - Requiere CVE específico en runtime
 - Configuraciones de seguridad pueden prevenir
 
-**Impacto:** Crítico
+**Impacto:** Alto
 - Control total del nodo host
 - Acceso a todos los containers en el nodo
 - Posibilidad de acceder a secretos de kubelet
@@ -248,7 +248,7 @@ La aplicación no valida que el usuario tenga ownership del recurso solicitado, 
 - Muy común en APIs REST
 - OWASP API Security Top 10 #1
 
-**Impacto:** Alto
+**Impacto:** Crítico
 - Acceso a información de otros usuarios
 - Violación de confidencialidad
 - Posible exfiltración masiva vía enumeración

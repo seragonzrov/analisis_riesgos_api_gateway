@@ -1,7 +1,7 @@
 # 01. Información General del Proyecto
 
 **Equipo:** Juan Lamolle, Serafín González, Fernando Rodríguez  
-**Fecha de inicio:** 01/05/2026  
+**Fecha de inicio:** 24/05/2026  
 **Fecha de entrega:** 26/05/2026  
 **Versión:** 1.0
 

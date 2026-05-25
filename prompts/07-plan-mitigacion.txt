@@ -17,55 +17,48 @@ Tenés el análisis completo:
 - Scores DREAD en docs/05-priorizacion-dread.md
 - Kill chain en docs/06-mapa-attack.md
 
-Amenazas críticas (DREAD ≥ 40):
+Las 4 amenazas CRÍTICAS (DREAD ≥ 40) son:
 - TH18: API Flooding/DDoS — 46/50
 - TH25: IDOR — 42/50
 - TH06: SQL Injection — 41/50
 - TH14: PII Exposure in Logs — 40/50
 
-Kill chain identificado (8 fases, ver docs/06-mapa-attack.md):
+El kill chain identificado tiene 11 fases (ver docs/06-mapa-attack.md):
 Initial Access → Execution → Persistence → Privilege Escalation →
-Credential Access → Discovery → Collection → Exfiltration
+Defense Evasion → Credential Access → Discovery → Lateral Movement →
+Collection → Exfiltration → Impact
 
 Diseñá un plan de mitigación completo ejecutable en sprints de 2 semanas.
 
-PARTE 1 — CONTROLES DE SEGURIDAD:
-Para cada amenaza crítica o grupo relacionado, diseñá un control con:
+PARTE 1 — TABLA DE CONTROLES:
+Una tabla con todos los controles con columnas:
+ID | Amenazas que mitiga | Control de Seguridad | Prioridad | Estado
 
-CONTROL [ID] — [Nombre]
-Prioridad: P0 / P1 / P2
-Amenazas que mitiga: [TH-XX, ...]
-Reducción de riesgo esperada: X%
+Prioridades:
+- P0 (Crítico): implementación inmediata, Sprint 1-2
+- P1 (Alto): próximo ciclo, Sprint 3-4
+- P2 (Medio): planificado, Sprint 5-6
 
-DESCRIPCIÓN TÉCNICA: [qué hace y por qué es efectivo]
+PARTE 2 — CONTROLES POR CATEGORÍA:
+Organizá los controles en tres categorías:
+- Controles PREVENTIVOS (evitan que ocurra el ataque)
+- Controles DETECTIVOS (detectan cuando ocurre el ataque)
+- Controles CORRECTIVOS (responden y recuperan después del ataque)
 
-IMPLEMENTACIÓN PASO A PASO:
-1. [paso concreto con tecnología específica]
-2. ...
+PARTE 3 — DETALLE DE TODOS LOS CONTROLES (C01-C15):
+Para cada control, generá una ficha completa con:
+- Amenazas que mitiga (todas, no solo la principal)
+- Prioridad, timeline y responsable sugerido
+- Implementación técnica paso a paso
+- Snippets de configuración reales:
+  YAML de Kubernetes, código JavaScript/TypeScript,
+  configuración de Fluentd, comandos de Vault,
+  reglas de Falco, comandos bash, etc.
+- Criterio de aceptación con checklist
+- Esfuerzo estimado en horas y costo (open source / licencia / cloud)
 
-CONFIGURACIÓN DE REFERENCIA:
-[YAML de K8s / regla Falco / comando / snippet]
-
-CRITERIO DE ACEPTACIÓN:
-[ ] [test que confirma que funciona]
-
-ESFUERZO ESTIMADO: Xh | Sprint: 1/2/3
-COSTO: [open source / licencia / costo cloud]
-
-PARTE 2 — ROADMAP:
-Sprint 1 (semanas 1-2): Controles P0
-Sprint 2 (semanas 3-4): Controles P1
-Sprint 3 (semanas 5-6): Controles P2 + pentest de validación
-Para cada sprint: tabla con Control | Responsable | Dependencias | Definition of Done
-
-PARTE 3 — ALINEACIÓN A FRAMEWORKS:
-Tabla: Control | NIST CSF | ISO 27001 | OWASP API Top 10 | CWE mitigado
-
-PARTE 4 — MÉTRICAS DE ÉXITO:
-Por cada área de control: KPI | Umbral de alerta | Herramienta | Frecuencia
-
+Los controles P0 deben poder implementarse en menos de 16 horas de ingeniería.
 Preferir herramientas open source ya presentes en el stack.
-Cada control P0 debe implementarse en menos de 16 horas de ingeniería.
 ```
 
 ---
@@ -73,24 +66,35 @@ Cada control P0 debe implementarse en menos de 16 horas de ingeniería.
 ## Response Summary
 
 La IA generó:
-- **15 controles de seguridad** (5 P0, 5 P1, 5 P2) con YAML de configuración
-- **5 controles P0** (implementar en Sprint 1):
-  - C01: Rate Limiting en 3 capas → mitiga TH18
+- **Tabla de 15 controles** (C01-C15) con todas las amenazas que mitiga cada uno:
+  - C01: Rate Limiting en 3 capas (WAF + Kong + Application) → mitiga TH18, TH21
   - C02: JWT Secret Rotation + RS256 → mitiga TH01, TH23
-  - C03: Log Scrubbing + Encryption → mitiga TH14
-  - C04: External Secrets Operator + Vault → mitiga TH16, TH08
-  - C05: Input Validation Framework → mitiga TH06, TH25
-- Roadmap de 3 sprints (6 semanas)
-- Mapeo completo a NIST CSF e ISO 27001
-- 8 KPIs de seguridad con umbrales y herramientas
+  - C03: Log Scrubbing + Encryption → mitiga TH10, TH11, TH14
+  - C04: External Secrets Operator + Vault → mitiga TH01, TH04, TH08, TH16
+  - C05: Input Validation Framework → mitiga TH05, TH06, TH25
+  - C06: Image Signing + Scanning → mitiga TH09
+  - C07: Security Contexts + AppArmor → mitiga TH09, TH22, TH24
+  - C08: Resource Limits + HPA → mitiga TH19, TH20
+  - C09: mTLS Strict Mode (Istio) → mitiga TH02
+  - C10: Network Policies + Admission Controllers → mitiga TH26
+  - C11: Runtime Security (Falco) → mitiga TH07, TH21 + todas transversalmente
+  - C12: Immutable Audit Logs → mitiga TH10, TH11, TH12
+  - C13: Session Encryption + HTTPOnly Cookies → mitiga TH03, TH15
+  - C14: Error Handling Framework → mitiga TH13, TH17
+  - C15: RBAC Review + Least Privilege → mitiga TH27
+- Fichas completas para los 15 controles con snippets de configuración:
+  YAML de K8s, reglas de Falco, comandos de Vault, código JavaScript/TypeScript,
+  configuración de Redis TLS, políticas de ILM de Elasticsearch, OPA Gatekeeper constraints
+- Criterios de aceptación con checklist para cada control
+- Esfuerzo estimado entre 6h y 12h por control P0
 
 ---
 
 ## Iteraciones Realizadas
 
-1. **Primera iteración:** Controles P0 con snippets de configuración
-2. **Segunda iteración:** Controles P1 y P2 + roadmap de sprints
-3. **Tercera iteración:** Métricas de éxito y alineación a frameworks
+1. **Primera iteración:** Tabla de controles y fichas de C01-C05 (P0)
+2. **Segunda iteración:** Fichas de C06-C11 (P1) con snippets específicos
+3. **Tercera iteración:** Fichas de C12-C15 (P2) y revisión de amenazas mitigadas
 
 ---
 
@@ -107,6 +111,10 @@ Guardado en: `docs/07-plan-mitigacion.md`
 ---
 
 **Notas:**
-- C01 (Rate Limiting) se consideró el más urgente por el score DDoS de 46/50
-- C03 (Log Scrubbing) fue el más debatido: se decidió priorizar P0 por riesgo GDPR
-- Los controles P0 se resumen en slide 9 de la presentación final
+- C01 mitiga también TH21 (queue flooding) porque el rate limiting general
+  reduce la tasa de mensajes que pueden generarse desde el exterior
+- C04 mitiga TH08 además de TH16 porque Vault reemplaza los ConfigMaps
+  nativos de K8s que son el vector de modificación de TH08
+- C11 (Falco) se marca como "todas" porque es una capa detectiva transversal;
+  se asigna específicamente a TH07 y TH21 donde es la única cobertura disponible
+- Los controles P0 se resumen en la slide 9 de la presentación final

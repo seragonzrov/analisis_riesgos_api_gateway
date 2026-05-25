@@ -14,35 +14,33 @@ Eres un arquitecto de seguridad senior. Contexto en 00-memory-bank.md.
 Tenés el análisis de riesgos completo del API Gateway:
 - 27 amenazas identificadas (docs/04-analisis-stride.md)
 - 4 amenazas críticas con scores DREAD (docs/05-priorizacion-dread.md)
-- Kill chain completo de 8 fases (docs/06-mapa-attack.md)
-- 15 controles de seguridad en 3 sprints (docs/07-plan-mitigacion.md)
-- 4 riesgos residuales documentados (docs/09-riesgos-residuales.md)
+- Kill chain completo de 11 fases y 29 técnicas ATT&CK (docs/06-mapa-attack.md)
+- 15 controles de seguridad priorizados (docs/07-plan-mitigacion.md)
+- 26 controles mapeados a NIST/ISO 27001 (docs/08-controles-nist-iso.md)
+- 7 riesgos residuales documentados (docs/09-riesgos-residuales.md)
 - Nivel de riesgo residual: MEDIO-BAJO
 
 Generá el documento de conclusiones con:
 
-1. RESUMEN EJECUTIVO (máximo 300 palabras):
+1. RESUMEN EJECUTIVO:
    - Qué sistema se analizó y por qué es crítico desde seguridad
-   - Principales hallazgos en 3-5 puntos concretos
+   - Principales hallazgos con datos concretos
    - Nivel de riesgo actual vs. nivel post-mitigación
    - Recomendación principal del equipo
 
-2. HALLAZGOS CLAVE:
-   - Las 3 vulnerabilidades más críticas con su impacto de negocio
-   - El patrón de ataque más probable (kill chain)
-   - Los 2 gaps de seguridad más importantes identificados
-
-3. RECOMENDACIONES PRIORIZADAS:
+2. RECOMENDACIONES PRIORIZADAS:
    - Inmediatas (antes de producción): qué no puede salir sin esto
    - Corto plazo (Sprint 1-2, 4 semanas): controles P0
    - Mediano plazo (Sprint 3, 6 semanas): controles P1 y P2
    - Largo plazo (próximo trimestre): mejoras de madurez
 
-4. MÉTRICAS DE SEGUIMIENTO:
-   - 5 KPIs de seguridad medibles en producción
-   - Herramienta de visualización para cada uno
+3. MÉTRICAS DE SEGURIDAD (KPIs):
+   Tabla con: Métrica | Baseline | Objetivo | Impacto
+   Cubrir: MTTD, MTTR, vulnerabilidades críticas sin patchear,
+   containers con imagen firmada, intentos de ataque bloqueados,
+   uptime del API Gateway
 
-5. PRÓXIMOS PASOS CONCRETOS:
+4. PRÓXIMOS PASOS CONCRETOS:
    - 3 acciones para la próxima semana con responsable sugerido
 
 Tono: ejecutivo pero técnico. Entendible para un manager de ingeniería
@@ -54,18 +52,30 @@ y para el profesor del curso, sin perder el detalle técnico.
 ## Response Summary
 
 La IA generó:
-- Resumen ejecutivo de 280 palabras
-- 3 hallazgos clave con impacto de negocio cuantificado (GDPR, revenue, acceso masivo)
-- Roadmap de recomendaciones en 4 horizontes temporales
-- 5 KPIs con herramientas: Kibana, Prometheus, Falco, alertas PagerDuty
-- 3 próximos pasos concretos con owner y fecha sugerida
+- Resumen ejecutivo con 7 hallazgos principales:
+  superficie de ataque, 4 amenazas críticas, 4 trust boundaries,
+  defensa en profundidad en 6 capas, 29 técnicas ATT&CK en 11 fases,
+  15 controles alineados a NIST/ISO 27001, 7 riesgos residuales documentados
+- Situación actual (0 controles implementados) vs situación objetivo
+  (15 controles, riesgo MEDIO-BAJO)
+- Tabla de controles P0 con ROI estimado de 53:1 a 84:1
+  (inversión ~$50K vs pérdida potencial $4.24M según IBM 2023)
+- 6 KPIs con baseline y objetivo:
+  MTTD (4h → <15min), MTTR (12h → <1h), vulnerabilidades críticas sin
+  patchear, containers con imagen firmada (0% → 100%),
+  intentos de ataque bloqueados, uptime API Gateway (99.5% → 99.95%)
+- Roadmap de compliance: SOC 2 Type I (Q3 2026), SOC 2 Type II (Q4 2026),
+  ISO 27001 certification (Q1 2027)
+- Próximos pasos en 7 horizontes: semana, Sprint 1, Sprint 2,
+  Sprint 3-4, mensual, trimestral y anual
 
 ---
 
 ## Iteraciones Realizadas
 
-1. **Primera iteración:** Resumen ejecutivo y hallazgos
-2. **Segunda iteración:** Recomendaciones priorizadas y métricas
+1. **Primera iteración:** Resumen ejecutivo, hallazgos y recomendaciones P0
+2. **Segunda iteración:** KPIs con baseline/objetivo, roadmap de compliance
+   y próximos pasos en todos los horizontes temporales
 
 ---
 
@@ -83,5 +93,5 @@ Guardado en: `docs/10-conclusiones.md`
 
 **Notas:**
 - El resumen ejecutivo se usó como base para la presentación final (slides 12-13)
-- Los KPIs se incorporaron a la slide de conclusiones
-- Los 3 próximos pasos se convirtieron en el cierre de la presentación
+- Los 6 KPIs se incorporaron a la slide de conclusiones
+- Los próximos pasos inmediatos se convirtieron en el cierre de la presentación

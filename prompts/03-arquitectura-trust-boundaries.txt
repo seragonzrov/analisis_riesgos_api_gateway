@@ -24,27 +24,27 @@ Tecnologías del sistema:
 
 Por favor generá:
 
-1. DESCRIPCIÓN DE ARQUITECTURA en texto:
-   - Cómo fluye una request desde el cliente hasta la base de datos (paso a paso)
+1. DIAGRAMA DE ARQUITECTURA en ASCII:
+   Las 4 zonas del sistema con los componentes dentro de cada una
+   y flechas indicando protocolos entre zonas.
+
+2. FLUJO DE DATOS paso a paso:
+   - Cómo fluye una request desde el cliente hasta la base de datos
    - Qué hace cada componente en ese flujo
-   - Cómo se comunican los microservicios entre sí internamente
+   - Flujos adicionales: async messaging, logging, métricas, security events
 
-2. DEFINICIÓN DE TRUST BOUNDARIES:
+3. TABLA DE ACTORES DEL SISTEMA:
+   Columnas: Actor | Descripción | Privilegios
+
+4. DEFINICIÓN DE TRUST BOUNDARIES:
    Para cada zona (TB1 a TB4), especificá:
-   - Nombre y descripción de la zona
-   - Componentes que viven en ella
-   - Nivel de confianza (0-100%) y justificación
-   - Protocolo y mecanismo de validación al cruzar el boundary
-   - Qué NO pasa automáticamente de una zona a la siguiente
-
-3. TABLA DE FLUJOS DE DATOS:
-   Columnas: Origen | Destino | Protocolo | Tipo de dato | Cruza boundary | Clasificación
-
-4. SUPUESTOS DE SEGURIDAD documentados explícitamente
-   (qué se asume como dado y queda fuera del alcance del análisis)
+   - Nombre y nivel de confianza (%)
+   - Protocolo obligatorio para cruzar el boundary
+   - Mecanismo de validación
+   - Qué NO pasa automáticamente sin validación explícita
 
 Regla clave: no existe confianza transitiva entre boundaries.
-Formato Markdown con diagramas ASCII donde ayude a la comprensión.
+Formato Markdown con diagramas ASCII.
 ```
 
 ---
@@ -52,18 +52,28 @@ Formato Markdown con diagramas ASCII donde ayude a la comprensión.
 ## Response Summary
 
 La IA generó:
-- Descripción completa del flujo de requests en 8 pasos
-- 4 trust boundaries con nivel de confianza y mecanismo de validación
-- Tabla de 12 flujos de datos identificados
-- 8 supuestos de seguridad documentados explícitamente
-- Diagrama ASCII de la arquitectura por capas
+- Diagrama ASCII de la arquitectura en 4 capas con componentes y protocolos
+- Flujo de requests en 5 pasos principales:
+  1. Cliente → WAF (HTTPS, filtrado de ataques, rate limiting por IP)
+  2. WAF → API Gateway (JWT/OAuth2, rate limiting por usuario, logging)
+  3. API Gateway → Service Mesh → Microservicio (mTLS, routing, circuit breaking)
+  4. Microservicio → Base de Datos (connection pool, prepared statements)
+  5. Microservicio → Response → Cliente (logging, compresión, caching)
+- 4 flujos adicionales: async messaging (RabbitMQ), logging (Fluentd → Elasticsearch),
+  métricas (Istio → Prometheus → Grafana) y security events (Falco → PagerDuty)
+- Tabla de 9 actores del sistema con privilegios
+- 4 trust boundaries definidos:
+  - TB1: Internet ↔ DMZ (0% → 30%, HTTPS + WAF + JWT)
+  - TB2: DMZ ↔ Service Mesh (30% → 70%, mTLS + certificados Istio)
+  - TB3: Service Mesh ↔ Data Layer (70% → 90%, TLS + credentials rotation)
+  - TB4: Usuarios ↔ K8s Control Plane (variable, kubectl + RBAC + audit logging)
 
 ---
 
 ## Iteraciones Realizadas
 
-1. **Primera iteración:** Generó descripción general y 4 trust boundaries
-2. **Segunda iteración:** Se agregó la tabla de flujos de datos y supuestos explícitos
+1. **Primera iteración:** Diagrama ASCII, flujo de requests y 4 trust boundaries
+2. **Segunda iteración:** Se agregó la tabla de actores del sistema y los flujos adicionales
 
 ---
 
@@ -82,4 +92,4 @@ Guardado en: `docs/03-arquitectura-trust-boundaries.md`
 **Notas:**
 - Se definió explícitamente que no hay confianza transitiva entre zonas
 - El trust boundary más crítico es TB1↔TB2 (Internet → DMZ)
-- Los supuestos se usaron para delimitar el scope del análisis STRIDE (prompt siguiente)
+- Los supuestos de seguridad quedaron documentados en docs/01-informacion-general.md

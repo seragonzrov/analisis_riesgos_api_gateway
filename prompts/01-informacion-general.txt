@@ -1,0 +1,95 @@
+# Prompt 00: Información General del Proyecto
+
+**Fecha:** 24/05/2026
+**Herramienta:** Claude Sonnet 4.6 (Anthropic)
+**Propósito:** Generar el documento de información general, alcance y supuestos del análisis
+
+---
+
+## Prompt Utilizado
+
+```
+Necesito crear el documento de información general para un análisis de riesgos
+de seguridad formal. El sistema bajo análisis es una arquitectura de microservicios
+con API Gateway.
+
+Datos del equipo:
+- Juan Lamolle, Serafín González, Fernando Rodríguez
+- Fecha de inicio: 24/05/2026
+- Fecha de entrega: 26/05/2026
+
+Tecnologías del sistema:
+- API Gateway: Kong / AWS API Gateway con OAuth2/JWT
+- WAF: Web Application Firewall (ModSecurity/AWS WAF)
+- Service Mesh: Istio con mTLS
+- Microservicios: Users Service, Inventory Service, Orders Service
+- Capa de datos: PostgreSQL, RabbitMQ, Elasticsearch
+- Cache distribuido: Redis
+- Orquestación: Kubernetes cluster
+- Observabilidad: ELK Stack (Elasticsearch, Logstash, Kibana)
+
+Generá un documento en Markdown con las siguientes secciones:
+
+1. DESCRIPCIÓN DEL SISTEMA:
+   - Descripción general de la arquitectura
+   - Lista de componentes principales con su función
+
+2. ALCANCE DEL ANÁLISIS:
+   - Componentes INCLUIDOS en el análisis (con justificación)
+   - Componentes FUERA DE ALCANCE en tabla con columnas:
+     Componente | Razón de Exclusión
+
+3. SUPUESTOS:
+   Lista de supuestos de seguridad que se dan por verdaderos
+   y que quedan fuera del análisis. Incluí supuestos sobre:
+   - Infraestructura del cloud provider
+   - Accesos del equipo de operaciones y desarrollo
+   - Prácticas de desarrollo del código
+   - Gestión de certificados TLS
+   - Disaster recovery existente
+   - Encriptación de tráfico entre zonas
+   - Network policies del cloud provider
+
+Formato Markdown con navegación al final
+(enlace a doc anterior README.md y siguiente 02-inventario-activos.md).
+```
+
+---
+
+## Response Summary
+
+La IA generó:
+- Descripción del sistema con arquitectura de microservicios y lista de
+  8 componentes principales: API Gateway, WAF, Service Mesh, microservicios
+  Users/Inventory/Orders, capa de datos, Redis, Kubernetes y ELK Stack
+- Sección de alcance con 10 componentes incluidos y tabla de 4 componentes
+  excluidos: pipeline CI/CD, entornos de desarrollo local, servicios de
+  terceros externos y aplicaciones móviles/web del cliente
+- Lista de 8 supuestos de seguridad documentados explícitamente
+
+---
+
+## Iteraciones Realizadas
+
+1. **Primera iteración:** Descripción del sistema y componentes
+2. **Segunda iteración:** Se agregaron los componentes fuera de alcance
+   con justificaciones y los supuestos de seguridad explícitos
+
+---
+
+## Validación
+
+**Revisado por:** Juan Lamolle, Serafín González, Fernando Rodríguez
+
+---
+
+## Output Final
+
+Guardado en: `docs/01-informacion-general.md`
+
+---
+
+**Notas:**
+- Los supuestos documentados aquí delimitaron el scope del análisis STRIDE
+- Los componentes fuera de alcance (especialmente CI/CD) quedaron como
+  área de análisis recomendada en las conclusiones

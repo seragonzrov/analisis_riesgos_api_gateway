@@ -91,8 +91,8 @@
 
 **Distribución de amenazas:**
 - **CRÍTICO:** 4 amenazas (TH18, TH25, TH06, TH14)
-- **ALTO:** 16 amenazas
-- **MEDIO:** 7 amenazas
+- **ALTO:** 18 amenazas
+- **MEDIO:** 5 amenazas
 - **BAJO:** 0 amenazas
 - **MÍNIMO:** 0 amenazas
 

@@ -68,11 +68,11 @@ Guardado en: `docs/04-analisis-stride.md`
 
 Amenazas identificadas:
 - **Spoofing:** 4 amenazas
-- **Tampering:** 5 amenazas (2 críticas)
+- **Tampering:** 5 amenazas (1 crítica)
 - **Repudiation:** 3 amenazas
-- **Information Disclosure:** 5 amenazas (2 críticas)
-- **Denial of Service:** 5 amenazas (3 críticas)
-- **Elevation of Privilege:** 5 amenazas (2 críticas)
+- **Information Disclosure:** 5 amenazas (1 crítica)
+- **Denial of Service:** 5 amenazas (1 crítica)
+- **Elevation of Privilege:** 5 amenazas (1 crítica)
 
 **TOTAL:** 27 amenazas
 

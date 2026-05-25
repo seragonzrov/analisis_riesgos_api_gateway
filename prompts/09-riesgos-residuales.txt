@@ -14,56 +14,81 @@ Contexto del sistema en 00-memory-bank.md.
 
 Ya diseñamos 15 controles (docs/07-plan-mitigacion.md) para mitigar
 las 27 amenazas del análisis STRIDE. Los controles P0 cubren las críticas:
-- C01: Rate Limiting → mitiga TH18 (DDoS)
+- C01: Rate Limiting → mitiga TH18 (DDoS), TH21 (Queue Flooding)
 - C02: JWT Rotation + RS256 → mitiga TH01, TH23
-- C03: Log Scrubbing → mitiga TH14
-- C04: External Secrets → mitiga TH16, TH08
-- C05: Input Validation → mitiga TH06, TH25
+- C03: Log Scrubbing → mitiga TH10, TH11, TH14
+- C04: External Secrets → mitiga TH01, TH04, TH08, TH16
+- C05: Input Validation → mitiga TH05, TH06, TH25
 
 Aun con todos los controles implementados, algunos riesgos no se pueden
 eliminar completamente. Identificá y documentá los RIESGOS RESIDUALES.
 
 Para cada riesgo residual:
-1. ID y nombre
+1. ID y nombre (R01, R02, etc.)
 2. Por qué persiste aún con los controles implementados
 3. Probabilidad residual: Muy Alta / Alta / Media / Baja / Muy Baja
 4. Impacto residual: Crítico / Alto / Medio / Bajo
 5. Estrategia de tratamiento:
-   - ACEPTAR (documentado y asumido)
+   - ACEPTAR (documentado y asumido por la organización)
    - MITIGAR ADICIONALMENTE (con qué control extra)
    - TRANSFERIR (seguro, contrato con proveedor)
    - EVITAR (cambio de arquitectura)
 6. Owner del riesgo
 7. Frecuencia de revisión sugerida
 
-Considerá especialmente:
-- Zero-days en componentes del stack (K8s, Istio, Kong)
-- Insider threats con acceso legítimo
-- Supply chain attacks (dependencias npm/pip/Docker comprometidas)
-- DDoS volumétrico que supere capacidad del cloud provider (> 100 Gbps)
-- Errores humanos en configuración de producción
+Considerá especialmente estos escenarios que los controles diseñados
+no cubren completamente:
+- Zero-days en componentes del stack (Kubernetes, Istio, Kong)
+- Insider threats: empleados con acceso legítimo que actúan maliciosamente
+- Advanced Persistent Threats (APT) / actores de estado-nación con recursos ilimitados
+- Supply chain attacks: dependencias npm, pip o imágenes Docker comprometidas
+- DDoS volumétrico masivo que supere la capacidad del cloud provider (> 100 Gbps)
+- Social engineering / phishing dirigido a empleados con acceso privilegiado
+- Fallo regional completo del cloud provider (regional outage)
 
-Concluí con tabla resumen del riesgo residual agregado y si es
-aceptable para un sistema de producción.
+Al finalizar incluí:
+- Tabla resumen de todos los riesgos con ID, nombre, probabilidad,
+  impacto y estrategia
+- Resumen de estrategias de tratamiento por riesgo
+- Evaluación de si el nivel de riesgo residual agregado es aceptable
+  para un sistema de producción, con justificación
 ```
 
 ---
 
 ## Response Summary
 
-La IA identificó **4 riesgos residuales**:
-- **R01:** Zero-day en Kubernetes — Prob: Muy Baja, Impacto: Crítico → ACEPTAR + patching < 24h
-- **R02:** Insider threat — Prob: Baja, Impacto: Alto → MITIGAR (audit logs + least privilege)
-- **R03:** Supply chain attack — Prob: Baja, Impacto: Alto → MITIGAR (SBOM + registry privado)
-- **R04:** DDoS masivo > 100 Gbps — Prob: Baja, Impacto: Medio → TRANSFERIR (seguro ciberseguridad)
+La IA identificó **7 riesgos residuales:**
+- **R01:** Zero-day en Kubernetes — Prob: Muy Baja, Impacto: Crítico
+  → Estrategia: MITIGAR + ACEPTAR (patching < 24h, monitoreo de advisories, bug bounty)
+- **R02:** Insider threat (empleado malicioso) — Prob: Baja, Impacto: Alto
+  → Estrategia: MITIGAR + MONITOREAR (least privilege, audit logs exhaustivos,
+  background checks, separación de funciones)
+- **R03:** APT / nation-state actor — Prob: Muy Baja, Impacto: Crítico
+  → Estrategia: MITIGAR + ACEPTAR parcialmente (segmentación avanzada,
+  detección de anomalías con ML, threat intelligence feeds)
+- **R04:** Supply chain attack (npm, pip, Docker) — Prob: Baja, Impacto: Alto
+  → Estrategia: MITIGAR (SBOM, dependency scanning continuo, private registry
+  mirrors, lock files versionados)
+- **R05:** DDoS volumétrico masivo > 100 Gbps — Prob: Baja, Impacto: Medio
+  → Estrategia: TRANSFERIR + MITIGAR (Cloudflare/AWS Shield Advanced +
+  seguro de ciberseguridad + over-provisioning)
+- **R06:** Social engineering / phishing — Prob: Media, Impacto: Medio
+  → Estrategia: MITIGAR (security awareness training trimestral, simulaciones
+  de phishing, MFA obligatorio reduce impacto)
+- **R07:** Fallo regional del cloud provider — Prob: Muy Baja, Impacto: Alto
+  → Estrategia: MITIGAR + ACEPTAR (multi-AZ deployment, backups en región
+  secundaria, DR plan probado; multi-region considerado demasiado costoso)
 - Nivel de riesgo residual agregado: **MEDIO-BAJO** (aceptable para producción)
 
 ---
 
 ## Iteraciones Realizadas
 
-1. **Primera iteración:** 6 riesgos residuales identificados
-2. **Segunda iteración:** Se consolidaron en 4 más representativos con estrategias claras
+1. **Primera iteración:** 7 riesgos residuales identificados con probabilidad,
+   impacto y estrategia de tratamiento para cada uno
+2. **Segunda iteración:** Refinamiento de las justificaciones y agregado de
+   la evaluación del nivel de riesgo residual agregado
 
 ---
 
@@ -80,6 +105,12 @@ Guardado en: `docs/09-riesgos-residuales.md`
 ---
 
 **Notas:**
-- R01 (zero-day K8s) fue el más debatido — se decidió aceptar con política de patching agresivo
-- R04 se transfiere parcialmente con Cloudflare/AWS Shield + seguro ciberseguridad
-- Los riesgos residuales se mencionan en slide 11 de la presentación final
+- R01 (zero-day en Kubernetes) fue el más debatido: se decidió aceptar con
+  política de patching agresivo (< 24 horas desde publicación del CVE)
+- R03 (APT) se acepta parcialmente porque no hay defensa completa contra
+  actores con recursos ilimitados; se mitiga hasta donde es razonable
+- R05 (DDoS masivo) se transfiere con Cloudflare/AWS Shield Advanced y
+  seguro de ciberseguridad como capa adicional
+- R07 (cloud outage): multi-region se evaluó pero el costo no justifica
+  el riesgo actual; multi-AZ es suficiente como mitigación
+- Los riesgos residuales se presentan en la slide 11 de la presentación final

@@ -44,8 +44,8 @@ Este repositorio contiene el análisis completo de riesgos y threat modeling par
 ### Amenazas Identificadas
 - **Total:** 27 amenazas distribuidas en STRIDE
 - **Críticas (DREAD ≥40):** 4 amenazas
-- **Altas (DREAD 30-39):** 16 amenazas
-- **Medias (DREAD 20-29):** 7 amenazas
+- **Altas (DREAD 30-39):** 18 amenazas
+- **Medias (DREAD 20-29):** 5 amenazas
 
 ### Top 4 Amenazas Críticas
 1. **TH18: API Flooding / DDoS** (Score 46/50) - Sistema inaccesible
@@ -64,35 +64,51 @@ Este repositorio contiene el análisis completo de riesgos y threat modeling par
 
 ```
 analisis-riesgos-api-gateway/
-├── README.md                           # Este archivo
+├── README.md                                   # Este archivo
 ├── docs/
-│   ├── 01-informacion-general.md       # Alcance y contexto del proyecto
-│   ├── 02-inventario-activos.md        # 10 activos información + 14 tecnológicos
-│   ├── 03-arquitectura-trust-boundaries.md # 4 zonas de confianza
-│   ├── 04-analisis-stride.md           # 27 amenazas categorizadas
-│   ├── 05-priorizacion-dread.md        # Scoring y Top 4 críticas
-│   ├── 06-mapa-attack.md               # Kill chain MITRE ATT&CK
-│   ├── 07-plan-mitigacion.md           # 15 controles con código
-│   ├── 08-controles-nist-iso.md        # Mapeo a frameworks
-│   ├── 09-riesgos-residuales.md        # 7 riesgos aceptados
-│   └── 10-conclusiones.md              # Recomendaciones y próximos pasos
+│   ├── 01-informacion-general.md               # Alcance y contexto del proyecto
+│   ├── 02-inventario-activos.md                # 10 activos información + 14 tecnológicos
+│   ├── 03-arquitectura-trust-boundaries.md     # 4 zonas de confianza
+│   ├── 04-analisis-stride.md                   # 27 amenazas categorizadas
+│   ├── 05-priorizacion-dread.md                # Scoring y Top 4 críticas
+│   ├── 06-mapa-attack.md                       # Kill chain MITRE ATT&CK
+│   ├── 07-plan-mitigacion.md                   # 15 controles con código
+│   ├── 08-controles-nist-iso.md                # Mapeo a frameworks
+│   ├── 09-riesgos-residuales.md                # 7 riesgos aceptados
+│   └── 10-conclusiones.md                      # Recomendaciones y próximos pasos
 ├── diagrams/
-│   ├── arquitectura-completa.png       # Diagrama de arquitectura
-│   ├── trust-boundaries.png            # 4 zonas de confianza
-│   ├── attack-flow.png                 # Kill chain visual
-│   └── componentes-tecnicos.png        # Componentes del sistema
+│   ├── arquitectura.png                        # Diagrama de arquitectura
+│   ├── trust-boundaries.png                    # 4 zonas de confianza
+│   ├── attack-flow.png                         # Kill chain visual
+│   └── componentes-tecnicos.png                # Componentes del sistema
 ├── presentation/
-│   ├── Presentacion_Oficial_API_Gateway.pptx  # 14 slides
-│   └── Guion_Oficial_Presentacion.md   # Script 15 minutos
+│   └── Presentacion_Oficial_API_Gateway.pptx   # 13 slides
+├── prompts/
+│   ├── 00-memory-bank.md                       # Contexto para la IA (ver sección IA)
+│   ├── 01-informacion-general.txt              # Prompt: alcance y supuestos
+│   ├── 02-inventario-activos.txt               # Prompt: inventario de activos
+│   ├── 03-arquitectura-trust-boundaries.txt    # Prompt: arquitectura y zonas
+│   ├── 04-analisis-stride.txt                  # Prompt: identificación de amenazas
+│   ├── 05-priorizacion-dread.txt               # Prompt: scoring DREAD
+│   ├── 06-mapa-attack.txt                      # Prompt: mapeo ATT&CK y kill chain
+│   ├── 07-plan-mitigacion.txt                  # Prompt: controles de seguridad
+│   ├── 08-controles-nist-iso.txt               # Prompt: mapeo a frameworks
+│   ├── 09-riesgos-residuales.txt               # Prompt: riesgos residuales
+│   └── 10-conclusiones.txt                     # Prompt: conclusiones y recomendaciones
 ├── templates/
-│   └── Plantilla_Analisis_Riesgos.pdf  # Plantilla oficial del curso
+│   └── Plantilla_Analisis_Riesgos.pdf          # Plantilla oficial del curso
 ├── tools/
-│   ├── dread-matrix.xlsx               # Matriz de scoring
-│   └── stride-threats.csv              # 27 amenazas exportadas
+│   └── matrices/
+│       ├── DREAD_STRIDE_NIST_RESUMEN.xlsx      # DREAD, STRIDE, controles NIST, y resumen
+│       ├── matriz_dread.xlsx                   # 27 amenazas exportadas en DREAD
+│       ├── matriz_stride.xlsx                  # 27 amenazas exportadas en STRIDE
+│       └── stride-threats.csv                  # 27 amenazas exportadas en DREAD y STRIDE
 └── references/
-    ├── NIST-SP-800-30.pdf              # Guide for Risk Assessments
-    ├── NIST-SP-800-53.pdf              # Security Controls
-    └── MITRE-ATT&CK-Cloud.pdf          # Framework for Cloud
+    ├── NIST-SP-800-30.pdf                      # Guide for Risk Assessments
+    ├── NIST-SP-800-53.pdf                      # Security Controls
+    ├── NIST-SP-800-66.pdf                      # Guide for Cybersecurity Insurance
+    ├── NIST-SP-800-207.pdf                     # Guide for Zero Trust Architecture
+    └── MITRE-ATT&CK-Cloud.pdf                  # Framework for Cloud
 
 ```
 
@@ -108,7 +124,7 @@ Este proyecto utilizó asistencia de Inteligencia Artificial para:
 - Mapeo a frameworks NIST/ISO 27001
 
 ### Herramientas Empleadas
-- **Claude 4.5 Sonnet** (Anthropic) - Análisis STRIDE/DREAD, redacción técnica
+- **Claude 4.6 Sonnet** (Anthropic) - Análisis STRIDE/DREAD, redacción técnica
 - **ChatGPT GPT-4** (OpenAI) - Validación de controles NIST
 - **GitHub Copilot** - Asistencia en código de implementación
 

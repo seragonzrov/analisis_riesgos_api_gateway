@@ -69,8 +69,8 @@ La IA generó:
   - TH25: IDOR — 42/50
   - TH06: SQL Injection — 41/50
   - TH14: PII Exposure in Logs — 40/50
-- **16 amenazas ALTAS** (score 30-39)
-- **7 amenazas MEDIAS** (score 20-29)
+- **18 amenazas ALTAS** (score 30-39)
+- **5 amenazas MEDIAS** (score 20-29)
 - Tabla resumen completa ordenada por score
 
 ---

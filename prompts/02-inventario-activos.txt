@@ -64,5 +64,3 @@ El output se guardó en: `docs/02-inventario-activos.md`
 
 **Notas:**
 - Este prompt sirvió como base para el inventario inicial
-- Se realizaron 3 iteraciones de refinamiento
-- La versión final incluye justificaciones de criticidad

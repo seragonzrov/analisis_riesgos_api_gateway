@@ -39,7 +39,7 @@ Ningún control único es suficiente. Se requieren **múltiples capas de segurid
 - **Data layer** (encryption, access control)
 
 #### 5. Mapeo a MITRE ATT&CK
-Se mapearon **28 técnicas ATT&CK**, cubriendo las **11 fases del kill chain** desde Initial Access hasta Impact. Esto permite entender cómo un atacante real encadenaría múltiples amenazas.
+Se mapearon **29 técnicas ATT&CK**, cubriendo las **11 fases del kill chain** desde Initial Access hasta Impact. Esto permite entender cómo un atacante real encadenaría múltiples amenazas.
 
 #### 6. Controles Alineados a Frameworks
 Los **15 controles** propuestos están alineados a **NIST Cybersecurity Framework** e **ISO 27001**, facilitando auditorías de compliance.
@@ -49,15 +49,15 @@ Se documentaron **7 riesgos** que persisten después de implementar controles, c
 
 **SITUACIÓN ACTUAL:**
 - 27 amenazas identificadas
-- 4 críticas, 16 altas, 7 medias
+- 4 críticas, 18 altas, 5 medias
 - 0 controles implementados actualmente
 - Exposición significativa a ataques
 
 **SITUACIÓN OBJETIVO (post-implementación):**
 - 15 controles de seguridad implementados
 - 4 amenazas críticas mitigadas a nivel MEDIO/BAJO
-- 16 amenazas altas mitigadas
-- 7 riesgos residuales documentados y aceptados
+- 18 amenazas altas mitigadas
+- 5 riesgos residuales documentados y aceptados
 - Postura de seguridad robusta con defensa en profundidad
 
 ### 10.2 Recomendaciones Prioritarias
@@ -71,7 +71,7 @@ Los **5 controles P0** mitigan las 4 amenazas críticas identificadas:
 | **C01:** Rate Limiting 3 capas | 2 semanas | Baja | Crítico | TH18 (DDoS) |
 | **C02:** JWT Secret Rotation + RS256 | 2 semanas | Media | Alto | TH01 (falsificación) |
 | **C03:** Log Scrubbing + Encryption | 2 semanas | Baja | Crítico | TH14 (PII exposure) |
-| **C04:** External Secrets Operator | 2 semanas | Media | Alto | TH16 (secrets exposure) |
+| **C04:** External Secrets Operator | 2 semanas | Media | Alto | TH01 (falsificación)<br/>TH16 (secrets exposure) |
 | **C05:** Input Validation Framework | 3 semanas | Alta | Crítico | TH06 (SQL injection)<br/>TH25 (IDOR) |
 
 **TOTAL INVERSIÓN P0:** ~6 semanas de equipo de 3 personas = ~18 semanas-persona
