@@ -78,9 +78,9 @@ analisis-riesgos-api-gateway/
 │   └── 10-conclusiones.md                      # Recomendaciones y próximos pasos
 ├── diagrams/
 │   ├── arquitectura.png                        # Diagrama de arquitectura
-│   ├── trust-boundaries.png                    # 4 zonas de confianza
 │   ├── attack-flow.png                         # Kill chain visual
-│   └── componentes-tecnicos.png                # Componentes del sistema
+│   ├── componentes-tecnicos.png                # Componentes del sistema
+│   └── trust-boundaries.png                    # 4 zonas de confianza
 ├── presentation/
 │   └── Presentacion_Oficial_API_Gateway.pptx   # 13 slides
 ├── prompts/

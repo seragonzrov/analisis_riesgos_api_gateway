@@ -27,9 +27,10 @@ Para que la IA entienda completamente el proyecto, debe tener acceso a:
 - `references/NIST-SP-800-30.pdf` - Metodología de evaluación de riesgos
 
 ### Diagramas
-- `diagrams/arquitectura-completa.png` - Diagrama de arquitectura con todos los componentes
-- `diagrams/trust-boundaries.png` - 4 zonas de confianza visualizadas
+- `diagrams/arquitectura.png` - Diagrama de arquitectura con todos los componentes
 - `diagrams/attack-flow.png` - Kill chain MITRE ATT&CK
+- `diagrams/componentes-tecnicos.png` - Componentes del sistema
+- `diagrams/trust-boundaries.png` - 4 zonas de confianza visualizadas
 
 ---
 
