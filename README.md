@@ -164,9 +164,9 @@ Todos los prompts utilizados están documentados en la carpeta `prompts/` según
 
 | Integrante | Rol | Email |
 |------------|-----|-------|
-| Juan Lamolle | Arquitectura, NIST/ISO | juan.lamolle@... |
+| Juan Lamolle | Arquitectura, NIST/ISO | lamolleswelt@gmail.com |
 | Serafín González | Análisis STRIDE, Mitigación | seragonzrov@gmail.com |
-| Fernando Rodríguez | DREAD, MITRE ATT&CK | fernando.rodriguez@... |
+| Fernando Rodríguez | DREAD, MITRE ATT&CK | f.rodriguez96sur@gmail.com |
 
 ---
 
