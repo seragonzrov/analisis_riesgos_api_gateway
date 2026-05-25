@@ -75,7 +75,8 @@ analisis-riesgos-api-gateway/
 │   ├── 07-plan-mitigacion.md                   # 15 controles con código
 │   ├── 08-controles-nist-iso.md                # Mapeo a frameworks
 │   ├── 09-riesgos-residuales.md                # 7 riesgos aceptados
-│   └── 10-conclusiones.md                      # Recomendaciones y próximos pasos
+│   ├── 10-conclusiones.md                      # Recomendaciones y próximos pasos
+│   └── Analisis_Riesgos_API_Gateway_FINAL.md   # Documento completo y unificado
 ├── diagrams/
 │   ├── arquitectura.png                        # Diagrama de arquitectura
 │   ├── attack-flow.png                         # Kill chain visual
