@@ -1,0 +1,81 @@
+# Prompt 02: Análisis STRIDE
+
+**Fecha:** 24/05/2026  
+**Herramienta:** Claude 4.6 Sonnet (Anthropic)  
+**Propósito:** Identificar amenazas usando metodología STRIDE
+
+---
+
+## Prompt Utilizado
+
+```
+Tengo la siguiente arquitectura de API Gateway para microservicios:
+
+CONTEXTO (ver 00-memory-bank.md):
+- 4 Trust Boundaries: Internet → DMZ → Service Mesh → Data Layer
+- Activos críticos identificados en docs/02-inventario-activos.md
+- Componentes: Kong API Gateway, Istio, K8s, PostgreSQL, Redis, RabbitMQ
+
+Aplica la metodología STRIDE para identificar amenazas en CADA componente.
+
+Para cada amenaza, genera:
+- ID único (TH01, TH02, etc.)
+- Componente afectado
+- Categoría STRIDE (S, T, R, I, D, o E)
+- Descripción detallada de la amenaza
+- Referencia CWE/CVE si aplica
+- Ejemplo concreto de escenario de ataque
+
+Organiza las amenazas por categoría STRIDE y prioriza las más críticas 
+para este tipo de arquitectura.
+
+Genera al menos 20 amenazas distribuidas en las 6 categorías.
+```
+
+---
+
+## Response Summary
+
+La IA generó:
+- **27 amenazas** distribuidas en las 6 categorías STRIDE
+- Cada amenaza con ID, CWE, y escenario de ataque
+- Enfoque especial en:
+  - Spoofing: JWT falsification, session hijacking
+  - Tampering: SQL injection, container tampering
+  - Information Disclosure: PII in logs, secrets exposure
+  - DoS: API flooding, resource exhaustion
+  - Elevation of Privilege: IDOR, container escape
+
+---
+
+## Iteraciones Realizadas
+
+1. **Primera iteración:** Generó 15 amenazas genéricas
+2. **Segunda iteración:** Pedí amenazas específicas para Kubernetes/containers
+3. **Tercera iteración:** Agregué referencias CWE y escenarios detallados
+
+---
+
+## Validación
+
+**Revisado por:** Serafín González  
+
+---
+
+## Output Final
+
+Guardado en: `docs/04-analisis-stride.md`
+
+Amenazas identificadas:
+- **Spoofing:** 4 amenazas
+- **Tampering:** 5 amenazas (2 críticas)
+- **Repudiation:** 3 amenazas
+- **Information Disclosure:** 5 amenazas (2 críticas)
+- **Denial of Service:** 5 amenazas (3 críticas)
+- **Elevation of Privilege:** 5 amenazas (2 críticas)
+
+**TOTAL:** 27 amenazas
+
+---
+
+**Próximo paso:** Aplicar DREAD para priorizar estas 27 amenazas (ver prompt 03)

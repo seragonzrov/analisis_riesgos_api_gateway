@@ -1,0 +1,85 @@
+# Prompt 09: Riesgos Residuales
+
+**Fecha:** 24/05/2026
+**Herramienta:** Claude Sonnet 4.6 (Anthropic)
+**Propósito:** Identificar riesgos que persisten después de implementar todos los controles
+
+---
+
+## Prompt Utilizado
+
+```
+Eres un experto en gestión de riesgos de seguridad.
+Contexto del sistema en 00-memory-bank.md.
+
+Ya diseñamos 15 controles (docs/07-plan-mitigacion.md) para mitigar
+las 27 amenazas del análisis STRIDE. Los controles P0 cubren las críticas:
+- C01: Rate Limiting → mitiga TH18 (DDoS)
+- C02: JWT Rotation + RS256 → mitiga TH01, TH23
+- C03: Log Scrubbing → mitiga TH14
+- C04: External Secrets → mitiga TH16, TH08
+- C05: Input Validation → mitiga TH06, TH25
+
+Aun con todos los controles implementados, algunos riesgos no se pueden
+eliminar completamente. Identificá y documentá los RIESGOS RESIDUALES.
+
+Para cada riesgo residual:
+1. ID y nombre
+2. Por qué persiste aún con los controles implementados
+3. Probabilidad residual: Muy Alta / Alta / Media / Baja / Muy Baja
+4. Impacto residual: Crítico / Alto / Medio / Bajo
+5. Estrategia de tratamiento:
+   - ACEPTAR (documentado y asumido)
+   - MITIGAR ADICIONALMENTE (con qué control extra)
+   - TRANSFERIR (seguro, contrato con proveedor)
+   - EVITAR (cambio de arquitectura)
+6. Owner del riesgo
+7. Frecuencia de revisión sugerida
+
+Considerá especialmente:
+- Zero-days en componentes del stack (K8s, Istio, Kong)
+- Insider threats con acceso legítimo
+- Supply chain attacks (dependencias npm/pip/Docker comprometidas)
+- DDoS volumétrico que supere capacidad del cloud provider (> 100 Gbps)
+- Errores humanos en configuración de producción
+
+Concluí con tabla resumen del riesgo residual agregado y si es
+aceptable para un sistema de producción.
+```
+
+---
+
+## Response Summary
+
+La IA identificó **4 riesgos residuales**:
+- **R01:** Zero-day en Kubernetes — Prob: Muy Baja, Impacto: Crítico → ACEPTAR + patching < 24h
+- **R02:** Insider threat — Prob: Baja, Impacto: Alto → MITIGAR (audit logs + least privilege)
+- **R03:** Supply chain attack — Prob: Baja, Impacto: Alto → MITIGAR (SBOM + registry privado)
+- **R04:** DDoS masivo > 100 Gbps — Prob: Baja, Impacto: Medio → TRANSFERIR (seguro ciberseguridad)
+- Nivel de riesgo residual agregado: **MEDIO-BAJO** (aceptable para producción)
+
+---
+
+## Iteraciones Realizadas
+
+1. **Primera iteración:** 6 riesgos residuales identificados
+2. **Segunda iteración:** Se consolidaron en 4 más representativos con estrategias claras
+
+---
+
+## Validación
+
+**Revisado por:** Juan Lamolle
+
+---
+
+## Output Final
+
+Guardado en: `docs/09-riesgos-residuales.md`
+
+---
+
+**Notas:**
+- R01 (zero-day K8s) fue el más debatido — se decidió aceptar con política de patching agresivo
+- R04 se transfiere parcialmente con Cloudflare/AWS Shield + seguro ciberseguridad
+- Los riesgos residuales se mencionan en slide 11 de la presentación final

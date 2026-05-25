@@ -1,0 +1,85 @@
+# Prompt 03: Arquitectura y Trust Boundaries
+
+**Fecha:** 24/05/2026
+**Herramienta:** Claude Sonnet 4.6 (Anthropic)
+**Propósito:** Documentar arquitectura del sistema y definir las zonas de confianza
+
+---
+
+## Prompt Utilizado
+
+```
+Tengo el siguiente sistema de API Gateway para microservicios.
+Usá el contexto del 00-memory-bank.md como referencia.
+
+Tecnologías del sistema:
+- API Gateway: Kong / AWS API Gateway con OAuth2/JWT y rate limiting
+- WAF: ModSecurity / AWS WAF como capa perimetral
+- Service Mesh: Istio con mTLS y Envoy sidecars
+- Orquestación: Kubernetes cluster
+- Microservicios: Users, Inventory, Orders (containers Docker)
+- Datos: PostgreSQL, RabbitMQ, Elasticsearch
+- Cache/Sesiones: Redis
+- Logging: ELK Stack (Elasticsearch, Logstash, Kibana)
+
+Por favor generá:
+
+1. DESCRIPCIÓN DE ARQUITECTURA en texto:
+   - Cómo fluye una request desde el cliente hasta la base de datos (paso a paso)
+   - Qué hace cada componente en ese flujo
+   - Cómo se comunican los microservicios entre sí internamente
+
+2. DEFINICIÓN DE TRUST BOUNDARIES:
+   Para cada zona (TB1 a TB4), especificá:
+   - Nombre y descripción de la zona
+   - Componentes que viven en ella
+   - Nivel de confianza (0-100%) y justificación
+   - Protocolo y mecanismo de validación al cruzar el boundary
+   - Qué NO pasa automáticamente de una zona a la siguiente
+
+3. TABLA DE FLUJOS DE DATOS:
+   Columnas: Origen | Destino | Protocolo | Tipo de dato | Cruza boundary | Clasificación
+
+4. SUPUESTOS DE SEGURIDAD documentados explícitamente
+   (qué se asume como dado y queda fuera del alcance del análisis)
+
+Regla clave: no existe confianza transitiva entre boundaries.
+Formato Markdown con diagramas ASCII donde ayude a la comprensión.
+```
+
+---
+
+## Response Summary
+
+La IA generó:
+- Descripción completa del flujo de requests en 8 pasos
+- 4 trust boundaries con nivel de confianza y mecanismo de validación
+- Tabla de 12 flujos de datos identificados
+- 8 supuestos de seguridad documentados explícitamente
+- Diagrama ASCII de la arquitectura por capas
+
+---
+
+## Iteraciones Realizadas
+
+1. **Primera iteración:** Generó descripción general y 4 trust boundaries
+2. **Segunda iteración:** Se agregó la tabla de flujos de datos y supuestos explícitos
+
+---
+
+## Validación
+
+**Revisado por:** Fernando Rodríguez
+
+---
+
+## Output Final
+
+Guardado en: `docs/03-arquitectura-trust-boundaries.md`
+
+---
+
+**Notas:**
+- Se definió explícitamente que no hay confianza transitiva entre zonas
+- El trust boundary más crítico es TB1↔TB2 (Internet → DMZ)
+- Los supuestos se usaron para delimitar el scope del análisis STRIDE (prompt siguiente)

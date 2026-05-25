@@ -1,0 +1,96 @@
+# Prompt 06: Mapeo MITRE ATT&CK
+
+**Fecha:** 24/05/2026
+**Herramienta:** Claude Sonnet 4.6 (Anthropic)
+**Propósito:** Mapear las amenazas críticas al framework MITRE ATT&CK y construir el kill chain
+
+---
+
+## Prompt Utilizado
+
+```
+Eres un analista de threat intelligence especializado en MITRE ATT&CK
+con experiencia en arquitecturas cloud-native y Kubernetes.
+Contexto del sistema en 00-memory-bank.md.
+
+Tenés las amenazas priorizadas en docs/05-priorizacion-dread.md.
+Las 4 amenazas críticas (DREAD ≥ 40) son:
+- TH18: API Flooding/DDoS (46/50)
+- TH25: IDOR (42/50)
+- TH06: SQL Injection (41/50)
+- TH14: PII Exposure in Logs (40/50)
+
+PARTE 1 — MAPEO INDIVIDUAL:
+Para cada amenaza con score DREAD ≥ 30, completá:
+
+[ID] — [Nombre]
+- Tactic: TA-XXXX — [nombre]
+- Technique: T-XXXX — [nombre]
+- Sub-technique: T-XXXX.XXX (si aplica)
+- Procedimiento en este sistema: cómo lo ejecutaría el atacante concretamente
+- Indicadores de compromiso (IoC): 2-3 señales observables en logs o tráfico
+- Detección sugerida: regla Falco, alerta ELK, o métrica Prometheus específica
+
+Usá técnicas de ATT&CK for Containers cuando aplique
+(T1609, T1610, T1611, T1613, etc.)
+
+PARTE 2 — KILL CHAIN COMPLETO:
+Construí un kill chain realista de 6-10 pasos que encadene las amenazas
+más críticas desde acceso inicial hasta exfiltración.
+
+Para cada fase:
+- Tactic y Technique ATT&CK
+- Acción concreta del atacante
+- Prerequisito necesario
+- Herramienta o artefacto utilizado
+
+Indicá el punto de detección más temprano posible en la cadena.
+
+PARTE 3 — HEAT MAP DE TACTICS:
+Tabla con: Tactic | Amenazas mapeadas | Amenazas críticas | Cobertura de detección actual
+Concluí con qué tactics tienen mayor brecha de detección.
+```
+
+---
+
+## Response Summary
+
+La IA generó:
+- Mapeo ATT&CK de las 23 amenazas con score ≥ 30
+- Kill chain completo de 8 fases:
+  1. Initial Access (T1190) — CVE en Kong API Gateway
+  2. Execution (T1609) — kubectl exec en container
+  3. Persistence (T1525) — imagen maliciosa en registry
+  4. Privilege Escalation (T1611) — container escape runC
+  5. Credential Access (T1552.007) — extracción K8s Secrets
+  6. Discovery (T1613) — enumeración de pods y servicios
+  7. Collection (T1005) — pg_dump de PostgreSQL
+  8. Exfiltration (T1537) — transferencia a S3 del atacante
+- Heat map con Initial Access y Credential Access como tactics de mayor brecha
+
+---
+
+## Iteraciones Realizadas
+
+1. **Primera iteración:** Mapeo individual de amenazas críticas
+2. **Segunda iteración:** Kill chain completo con prerequisitos detallados
+3. **Tercera iteración:** Heat map y análisis de brechas de detección
+
+---
+
+## Validación
+
+**Revisado por:** Serafín González
+
+---
+
+## Output Final
+
+Guardado en: `docs/06-mapa-attack.md`
+
+---
+
+**Notas:**
+- El punto de detección más temprano es entre Fase 4 y Fase 5 (Falco detecta container escape)
+- Initial Access tiene cobertura BAJA — WAF no detecta exploits de aplicación específicos
+- El kill chain completo se usó en la slide 8 de la presentación final

@@ -1,0 +1,100 @@
+# Prompt 05: Priorización DREAD
+
+**Fecha:** 24/05/2026
+**Herramienta:** Claude Sonnet 4.6 (Anthropic)
+**Propósito:** Calcular el score de riesgo de las 27 amenazas usando metodología DREAD
+
+---
+
+## Prompt Utilizado
+
+```
+Eres un experto en seguridad ofensiva y defensiva especializado en arquitecturas
+de microservicios. Contexto del sistema en 00-memory-bank.md.
+
+Tenés las 27 amenazas identificadas en docs/04-analisis-stride.md.
+
+Aplicá la metodología DREAD para calcular el score de riesgo de cada amenaza.
+Evaluá las cinco dimensiones en escala 1-10:
+
+- Damage: daño potencial si se explota exitosamente
+  (1-3 menor, 4-6 moderado, 7-9 severo, 10 catastrófico)
+
+- Reproducibility: facilidad para reproducir el ataque
+  (1-3 muy difícil, 4-6 moderado, 7-9 fácil, 10 siempre funciona)
+
+- Exploitability: habilidades técnicas requeridas
+  (1-3 expertise avanzado, 4-6 técnico moderado, 7-9 herramientas automáticas, 10 sin habilidades)
+
+- Affected Users: cantidad de usuarios impactados
+  (1-3 individual, 4-6 grupo pequeño, 7-9 muchos usuarios, 10 todos)
+
+- Discoverability: facilidad para descubrir la vulnerabilidad
+  (1-3 muy difícil, 4-6 requiere análisis activo, 7-9 scanners automáticos, 10 trivial)
+
+Score total = D + R + E + A + D (máximo 50 puntos)
+Escala: 40-50 CRÍTICO | 30-39 ALTO | 20-29 MEDIO | 10-19 BAJO
+
+Para cada amenaza, respondé con este formato exacto:
+
+[ID] — [Nombre corto]
+| Criterio | Score | Justificación |
+| Damage | X/10 | ... |
+| Reproducibility | X/10 | ... |
+| Exploitability | X/10 | ... |
+| Affected Users | X/10 | ... |
+| Discoverability | X/10 | ... |
+| TOTAL | X/50 | Nivel: CRÍTICO / ALTO / MEDIO / BAJO |
+
+Al finalizar:
+1. Tabla resumen ordenada por score descendente
+2. Top 5 con recomendación de mitigación de una línea
+3. Distribución por nivel con porcentajes
+
+Consideraciones:
+- Tener en cuenta Kubernetes e Istio mTLS al evaluar exploitability
+- Para DoS que afecta disponibilidad total: Affected Users = 10
+- Vulnerabilidades detectables por ZAP/Burp/sqlmap: Discoverability 8-10
+- Si hay mitigación parcial ya implementada (ej: WAF): bajar Exploitability 1-2 puntos
+```
+
+---
+
+## Response Summary
+
+La IA generó:
+- Score DREAD para las 27 amenazas con justificación por dimensión
+- **4 amenazas CRÍTICAS** (score ≥ 40):
+  - TH18: API Flooding/DDoS — 46/50
+  - TH25: IDOR — 42/50
+  - TH06: SQL Injection — 41/50
+  - TH14: PII Exposure in Logs — 40/50
+- **16 amenazas ALTAS** (score 30-39)
+- **7 amenazas MEDIAS** (score 20-29)
+- Tabla resumen completa ordenada por score
+
+---
+
+## Iteraciones Realizadas
+
+1. **Primera iteración:** Scoring de las 27 amenazas
+2. **Segunda iteración:** Ajuste de scores de DoS considerando el WAF ya presente
+
+---
+
+## Validación
+
+**Revisado por:** Juan Lamolle
+
+---
+
+## Output Final
+
+Guardado en: `docs/05-priorizacion-dread.md`
+
+---
+
+**Notas:**
+- TH18 (DDoS) obtuvo el score más alto por Reproducibility y Affected Users perfectos (10/10)
+- El WAF existente redujo Exploitability en 1-2 puntos en amenazas de capa 7
+- Los scores DREAD se usaron para priorizar controles en el plan de mitigación (prompt 07)

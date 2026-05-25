@@ -1,0 +1,112 @@
+# Prompt 07: Plan de Mitigación
+
+**Fecha:** 24/05/2026
+**Herramienta:** Claude Sonnet 4.6 (Anthropic)
+**Propósito:** Diseñar controles de seguridad priorizados para mitigar las amenazas identificadas
+
+---
+
+## Prompt Utilizado
+
+```
+Eres un arquitecto de seguridad con experiencia en sistemas cloud-native,
+Kubernetes y API security. Contexto del sistema en 00-memory-bank.md.
+
+Tenés el análisis completo:
+- 27 amenazas STRIDE en docs/04-analisis-stride.md
+- Scores DREAD en docs/05-priorizacion-dread.md
+- Kill chain en docs/06-mapa-attack.md
+
+Amenazas críticas (DREAD ≥ 40):
+- TH18: API Flooding/DDoS — 46/50
+- TH25: IDOR — 42/50
+- TH06: SQL Injection — 41/50
+- TH14: PII Exposure in Logs — 40/50
+
+Kill chain identificado (8 fases, ver docs/06-mapa-attack.md):
+Initial Access → Execution → Persistence → Privilege Escalation →
+Credential Access → Discovery → Collection → Exfiltration
+
+Diseñá un plan de mitigación completo ejecutable en sprints de 2 semanas.
+
+PARTE 1 — CONTROLES DE SEGURIDAD:
+Para cada amenaza crítica o grupo relacionado, diseñá un control con:
+
+CONTROL [ID] — [Nombre]
+Prioridad: P0 / P1 / P2
+Amenazas que mitiga: [TH-XX, ...]
+Reducción de riesgo esperada: X%
+
+DESCRIPCIÓN TÉCNICA: [qué hace y por qué es efectivo]
+
+IMPLEMENTACIÓN PASO A PASO:
+1. [paso concreto con tecnología específica]
+2. ...
+
+CONFIGURACIÓN DE REFERENCIA:
+[YAML de K8s / regla Falco / comando / snippet]
+
+CRITERIO DE ACEPTACIÓN:
+[ ] [test que confirma que funciona]
+
+ESFUERZO ESTIMADO: Xh | Sprint: 1/2/3
+COSTO: [open source / licencia / costo cloud]
+
+PARTE 2 — ROADMAP:
+Sprint 1 (semanas 1-2): Controles P0
+Sprint 2 (semanas 3-4): Controles P1
+Sprint 3 (semanas 5-6): Controles P2 + pentest de validación
+Para cada sprint: tabla con Control | Responsable | Dependencias | Definition of Done
+
+PARTE 3 — ALINEACIÓN A FRAMEWORKS:
+Tabla: Control | NIST CSF | ISO 27001 | OWASP API Top 10 | CWE mitigado
+
+PARTE 4 — MÉTRICAS DE ÉXITO:
+Por cada área de control: KPI | Umbral de alerta | Herramienta | Frecuencia
+
+Preferir herramientas open source ya presentes en el stack.
+Cada control P0 debe implementarse en menos de 16 horas de ingeniería.
+```
+
+---
+
+## Response Summary
+
+La IA generó:
+- **15 controles de seguridad** (5 P0, 5 P1, 5 P2) con YAML de configuración
+- **5 controles P0** (implementar en Sprint 1):
+  - C01: Rate Limiting en 3 capas → mitiga TH18
+  - C02: JWT Secret Rotation + RS256 → mitiga TH01, TH23
+  - C03: Log Scrubbing + Encryption → mitiga TH14
+  - C04: External Secrets Operator + Vault → mitiga TH16, TH08
+  - C05: Input Validation Framework → mitiga TH06, TH25
+- Roadmap de 3 sprints (6 semanas)
+- Mapeo completo a NIST CSF e ISO 27001
+- 8 KPIs de seguridad con umbrales y herramientas
+
+---
+
+## Iteraciones Realizadas
+
+1. **Primera iteración:** Controles P0 con snippets de configuración
+2. **Segunda iteración:** Controles P1 y P2 + roadmap de sprints
+3. **Tercera iteración:** Métricas de éxito y alineación a frameworks
+
+---
+
+## Validación
+
+**Revisado por:** Juan Lamolle, Fernando Rodríguez
+
+---
+
+## Output Final
+
+Guardado en: `docs/07-plan-mitigacion.md`
+
+---
+
+**Notas:**
+- C01 (Rate Limiting) se consideró el más urgente por el score DDoS de 46/50
+- C03 (Log Scrubbing) fue el más debatido: se decidió priorizar P0 por riesgo GDPR
+- Los controles P0 se resumen en slide 9 de la presentación final

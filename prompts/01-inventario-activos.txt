@@ -1,0 +1,68 @@
+# Prompt 01: Inventario de Activos
+
+**Fecha:** 24/05/2026  
+**Herramienta:** Claude 4.6 Sonnet (Anthropic)  
+**Propósito:** Generar inventario completo de activos del sistema
+
+---
+
+## Prompt Utilizado
+
+```
+Necesito crear un inventario completo de activos para un sistema de API Gateway 
+en arquitectura de microservicios. El sistema incluye:
+
+- API Gateway (Kong/AWS)
+- Kubernetes cluster
+- Service Mesh (Istio)
+- 3 microservicios: Users, Inventory, Orders
+- PostgreSQL, Redis, RabbitMQ, Elasticsearch
+
+Por favor, genera:
+
+1. Tabla de activos de INFORMACIÓN con:
+   - ID (A01, A02, etc.)
+   - Nombre del activo
+   - Tipo de dato (PII, Transaccional, Credencial, etc.)
+   - Clasificación (Crítico, Alto, Medio, Bajo)
+   - Propietario/Componente responsable
+
+2. Tabla de activos TECNOLÓGICOS con:
+   - ID (T01, T02, etc.)
+   - Nombre del componente
+   - Tipo (Software, Hardware, Infraestructura)
+   - Criticidad
+   - Notas sobre su función
+
+3. Lista de activos INTANGIBLES (reputación, compliance, etc.)
+
+Usa formato Markdown con tablas bien formateadas.
+```
+
+---
+
+## Response Summary
+
+La IA generó un inventario completo con:
+- **10 activos de información** (A01-A10)
+- **14 activos tecnológicos** (T01-T14)
+- **5 activos intangibles**
+
+---
+
+## Validación
+
+**Revisado por:** Serafín González
+
+---
+
+## Output Final
+
+El output se guardó en: `docs/02-inventario-activos.md`
+
+---
+
+**Notas:**
+- Este prompt sirvió como base para el inventario inicial
+- Se realizaron 3 iteraciones de refinamiento
+- La versión final incluye justificaciones de criticidad

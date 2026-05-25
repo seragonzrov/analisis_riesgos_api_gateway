@@ -1,0 +1,101 @@
+## CONTEXTO
+Eres un analista de threat intelligence especializado en el framework MITRE ATT&CK,
+con experiencia específica en arquitecturas cloud-native y Kubernetes.
+
+El sistema bajo análisis es:
+- API Gateway expuesto a internet (Kong / AWS API Gateway)
+- Kubernetes cluster con Istio service mesh
+- Microservicios: Users, Inventory, Orders
+- Base de datos: PostgreSQL
+- Infraestructura de mensajería: RabbitMQ
+- Logging: Elasticsearch (ELK Stack)
+- Cache y sesiones: Redis
+
+---
+
+## TAREA
+Tomá las amenazas identificadas en el análisis STRIDE (especialmente las de mayor score DREAD)
+y mapeálas al framework MITRE ATT&CK for Containers / Cloud.
+
+Para cada amenaza o grupo de amenazas relacionadas, identificá:
+
+1. **La tactic ATT&CK** que corresponde (ej: Initial Access, Execution, Persistence...)
+2. **La technique específica** con su código T-XXXX
+3. **La sub-technique** si aplica (T-XXXX.XXX)
+4. **El procedimiento concreto** en el contexto de este sistema
+
+Tactics relevantes para este sistema (en orden de kill chain):
+- TA0001: Initial Access
+- TA0002: Execution
+- TA0003: Persistence
+- TA0004: Privilege Escalation
+- TA0006: Credential Access
+- TA0007: Discovery
+- TA0009: Collection
+- TA0010: Exfiltration
+- TA0040: Impact (DoS)
+
+---
+
+## PARTE 1: MAPEO INDIVIDUAL DE AMENAZAS
+
+Para cada amenaza del análisis STRIDE con score DREAD ≥ 30, completá:
+
+**[ID_AMENAZA] — [Nombre]**
+- **Tactic:** TA-XXXX — [Nombre de la tactic]
+- **Technique:** T-XXXX — [Nombre de la technique]
+- **Sub-technique:** T-XXXX.XXX — [Nombre] (si aplica)
+- **Procedimiento en este sistema:** [Descripción concreta de cómo el atacante ejecutaría esto contra el API Gateway / Kubernetes]
+- **Indicadores de compromiso (IoC):** [2-3 señales observables: logs anómalos, patrones de tráfico, etc.]
+- **Detección sugerida:** [Control de detección específico: regla Falco, alerta ELK, etc.]
+
+---
+
+## PARTE 2: CONSTRUCCIÓN DEL KILL CHAIN COMPLETO
+
+Construí un kill chain realista que encadene las amenazas más críticas en una secuencia de ataque coherente.
+
+El kill chain debe:
+- Comenzar con un vector de acceso inicial realista (CVE en Gateway, credencial comprometida, etc.)
+- Progresar lógicamente de una fase a la siguiente
+- Culminar en un objetivo de alto impacto (exfiltración de datos, disruption del servicio)
+- Tener entre 6 y 10 pasos
+
+Formato del kill chain:
+
+```
+KILL CHAIN: [Nombre del escenario de ataque]
+Objetivo final: [Qué obtiene el atacante]
+Tiempo estimado: [Horas/días para completar]
+
+FASE 1 — [Tactic]: [Technique T-XXXX]
+  → Acción: [Qué hace el atacante concretamente]
+  → Prerequisito: [Qué necesita para este paso]
+  → Artefacto: [Herramienta o payload utilizado]
+
+FASE 2 — [Tactic]: [Technique T-XXXX]
+  [...]
+
+PUNTO DE DETECCIÓN: Entre FASE X y FASE Y existe la oportunidad de detección más temprana.
+Control recomendado: [Qué alerta o control puede cortar la cadena acá]
+```
+
+---
+
+## PARTE 3: HEAT MAP DE TACTICS
+
+Al finalizar, generá una tabla que muestre qué tactics tienen mayor cobertura de amenazas:
+
+| Tactic | Cantidad de amenazas mapeadas | Amenazas críticas (DREAD≥40) | Cobertura de detección actual |
+|--------|------------------------------|------------------------------|-------------------------------|
+| Initial Access | X | X | Alta / Media / Baja |
+| [etc.] | | | |
+
+Y una conclusión de 3-4 oraciones sobre cuáles tactics tienen mayor brecha de detección y deben priorizarse.
+
+---
+
+## CONSIDERACIONES
+- Usá las técnicas específicas de MITRE ATT&CK for Containers cuando aplique (T1609, T1610, T1611, T1613, etc.)
+- Si una amenaza no tiene mapeo directo en ATT&CK, indicá la technique más cercana y justificá la diferencia
+- Los IoCs deben ser concretos y accionables: regex de logs, umbrales de métricas, nombres de binarios, etc.

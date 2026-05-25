@@ -1,0 +1,87 @@
+# Prompt 10: Conclusiones y Recomendaciones
+
+**Fecha:** 24/05/2026
+**Herramienta:** Claude Sonnet 4.6 (Anthropic)
+**Propósito:** Sintetizar el análisis completo en conclusiones ejecutivas y próximos pasos
+
+---
+
+## Prompt Utilizado
+
+```
+Eres un arquitecto de seguridad senior. Contexto en 00-memory-bank.md.
+
+Tenés el análisis de riesgos completo del API Gateway:
+- 27 amenazas identificadas (docs/04-analisis-stride.md)
+- 4 amenazas críticas con scores DREAD (docs/05-priorizacion-dread.md)
+- Kill chain completo de 8 fases (docs/06-mapa-attack.md)
+- 15 controles de seguridad en 3 sprints (docs/07-plan-mitigacion.md)
+- 4 riesgos residuales documentados (docs/09-riesgos-residuales.md)
+- Nivel de riesgo residual: MEDIO-BAJO
+
+Generá el documento de conclusiones con:
+
+1. RESUMEN EJECUTIVO (máximo 300 palabras):
+   - Qué sistema se analizó y por qué es crítico desde seguridad
+   - Principales hallazgos en 3-5 puntos concretos
+   - Nivel de riesgo actual vs. nivel post-mitigación
+   - Recomendación principal del equipo
+
+2. HALLAZGOS CLAVE:
+   - Las 3 vulnerabilidades más críticas con su impacto de negocio
+   - El patrón de ataque más probable (kill chain)
+   - Los 2 gaps de seguridad más importantes identificados
+
+3. RECOMENDACIONES PRIORIZADAS:
+   - Inmediatas (antes de producción): qué no puede salir sin esto
+   - Corto plazo (Sprint 1-2, 4 semanas): controles P0
+   - Mediano plazo (Sprint 3, 6 semanas): controles P1 y P2
+   - Largo plazo (próximo trimestre): mejoras de madurez
+
+4. MÉTRICAS DE SEGUIMIENTO:
+   - 5 KPIs de seguridad medibles en producción
+   - Herramienta de visualización para cada uno
+
+5. PRÓXIMOS PASOS CONCRETOS:
+   - 3 acciones para la próxima semana con responsable sugerido
+
+Tono: ejecutivo pero técnico. Entendible para un manager de ingeniería
+y para el profesor del curso, sin perder el detalle técnico.
+```
+
+---
+
+## Response Summary
+
+La IA generó:
+- Resumen ejecutivo de 280 palabras
+- 3 hallazgos clave con impacto de negocio cuantificado (GDPR, revenue, acceso masivo)
+- Roadmap de recomendaciones en 4 horizontes temporales
+- 5 KPIs con herramientas: Kibana, Prometheus, Falco, alertas PagerDuty
+- 3 próximos pasos concretos con owner y fecha sugerida
+
+---
+
+## Iteraciones Realizadas
+
+1. **Primera iteración:** Resumen ejecutivo y hallazgos
+2. **Segunda iteración:** Recomendaciones priorizadas y métricas
+
+---
+
+## Validación
+
+**Revisado por:** Juan Lamolle, Serafín González, Fernando Rodríguez
+
+---
+
+## Output Final
+
+Guardado en: `docs/10-conclusiones.md`
+
+---
+
+**Notas:**
+- El resumen ejecutivo se usó como base para la presentación final (slides 12-13)
+- Los KPIs se incorporaron a la slide de conclusiones
+- Los 3 próximos pasos se convirtieron en el cierre de la presentación
